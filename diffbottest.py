@@ -7,10 +7,6 @@ import urllib
 #urlToAnalyse = "https://www.indiatoday.in/education-today/gk-current-affairs/story/picassos-masterpiece-sold-auction-new-york-977763-2017-05-18"
 
 
-
-#articleText = data["objects"][0]["text"]
-
-
 class Website:
 
 	def __init__(self, url):
@@ -49,8 +45,8 @@ class Website:
 
 		return all_url
 
-#website = Website("https://www.indiatoday.in/education-today/gk-current-affairs/story/picassos-masterpiece-sold-auction-new-york-977763-2017-05-18")
-#print(website.getText())
-#print(website.getLanguage())
-#print(website.getDate())
-#print(website.getImages())
+website = Website("https://www.indiatoday.in/education-today/gk-current-affairs/story/picassos-masterpiece-sold-auction-new-york-977763-2017-05-18")
+print(website.getText())
+print(website.getLanguage())
+print(website.getDate())
+print(website.getImages())
