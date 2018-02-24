@@ -33,7 +33,7 @@ class Website:
 	def isArticle(self):
 		return self.json["objects"][0]["type"] == "article"
 
-	def getDate(self):
+	def getDate(self)
 		rawDate = self.json["objects"][0]["date"]
 		rawDate1 = rawDate.replace(" GMT", "")
 		rawDate2 = rawDate1.replace(",", "")
