@@ -11,6 +11,7 @@ def spellingQuality(text):
 	r = requests.get(prepareRequest(text))
 	response = r.json()
 	numberOfBadSentences = min(numberOfSentences, len(response["matches"]))
+	print(response["matches"][0])
 
 	return 1 - numberOfBadSentences / numberOfSentences
 
