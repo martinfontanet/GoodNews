@@ -1,6 +1,6 @@
 To run the backend server:
   
-  1) Get language tool on https://languagetool.org
+  1) Get language tool on https://languagetool.org (download the "Stand-alone for your Desktop" version)
   2) Run the language tool server: java -cp languagetool-server.jar org.languagetool.server.HTTPServer --port 8082
   3) Run the GoodNews analyzer server: python3 Server.py
 
