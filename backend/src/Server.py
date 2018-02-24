@@ -1,5 +1,6 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 from json import JSONDecodeError
+from PredictFakeness import predictFakeness
 import ssl
 import json
 
@@ -29,17 +30,18 @@ class RequestHandler(BaseHTTPRequestHandler):
         	self._respond(self._prepareResponse(parsed))
         except JSONDecodeError:
         	self._respond("The body you sent doesn't look like valid json.")
-        except:
+        except Exception as e:
+        	print(e)
         	self._respond("Internal error")
 
     def _respond(self, text):
     	self.wfile.write(bytes(text, "utf-8"))
 
     def _prepareResponse(self, args):
-    	toReturn = ""
-    	for key in args:
-    		toReturn += ("For key \"" + str(key) + "\" value is \"" + str(args[key]) + "\"<br>")
-    	return toReturn
+    	if "imagePath" not in args or "url" not in args:
+    		return "the JSON should contains keys \"imagePath\" and \"url\""
+    	else:
+    		return predictFakeness(args["imagePath"], args["url"])
 
 if __name__ == "__main__":
 	port = 8080
