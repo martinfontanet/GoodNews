@@ -1,23 +1,16 @@
-import numpy as np
-
+# Assuming only the year are passed as argument (as int)
 # assuming dates are passed as int representing year
 def isOutdated(otherDates, thisDate):
-
-
-	print(thisDate)
-	mean = np.array(otherDates).mean()
-
-	if(mean - thisDate >= 5):
-		return 0
-	elif(mean - thisDate <= -5):
+	if len(otherDates) == 0:
 		return 0
 
-	elif(thisDate < mean):
-		return (-1/5) * (mean-thisDate) + 1
+	mean = sum(otherDates) / len(otherDates)
+	toReturn = (thisDate - mean) / 5
+	toReturn = max(0, toReturn)
+	toReturn = min(1, toReturn)
+	return toReturn
 
-	elif(thisDate > mean):
-		return (1/5) * (mean-thisDate) + 1
-	
-	else:
-		return 0
-
+if __name__ == "__main__":
+	otherDates = [2000, 2000, 2000, 2000]
+	thisDate = 2100
+	print(isOutdated(otherDates, thisDate))

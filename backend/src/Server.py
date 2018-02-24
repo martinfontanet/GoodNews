@@ -3,6 +3,8 @@ from json import JSONDecodeError
 from PredictFakeness import predictFakeness
 import ssl
 import json
+import requests
+from ContentExtractor import *
 
 # HTTPS server idea taken at http://www.piware.de/2011/01/creating-an-https-server-in-python/
 # 
@@ -22,27 +24,50 @@ class RequestHandler(BaseHTTPRequestHandler):
         self.end_headers()
         
     def do_POST(self):
+        print("========================Request received========================")
         sentSize = int(self.headers['Content-Length'])
         sentData = self.rfile.read(sentSize).decode("utf-8")
-        
         self._set_headers()
-        try:
-        	parsed = json.loads(sentData)
-        	self._respond(self._prepareResponse(parsed))
-        except JSONDecodeError:
-        	self._respond("The body you sent doesn't look like valid json.")
-        except Exception as e:
-        	print(e)
-        	self._respond("Internal error")
+        parsed = json.loads(sentData)
+        self._respond(self._prepareResponse(parsed))
 
     def _respond(self, text):
+        print(text, type(text))
     	self.wfile.write(bytes(text, "utf-8"))
 
     def _prepareResponse(self, args):
-    	if "imagePath" not in args or "url" not in args:
-    		return "the JSON should contains keys \"imagePath\" and \"url\""
-    	else:
-    		return predictFakeness(args["imagePath"], args["url"])
+        if "url" not in args:
+            return "the JSON should contains key \"url\""
+        else:
+            website = Website(args["url"]).fetch()
+            if not website.isArticle():
+                return '{"isFake": 0, "message": "This is not an article!", "isArticle": 0}'
+            print("1")
+            images = website.getImages()
+            print(images)
+            print("2")
+            imagesLinks = []
+            print("3")
+            for image in images:
+                imagesLinks.extend(self._getLinksForImageURL(image))
+
+            print("images:",imagesLinks)
+            ###
+            return json.dumps(predictFakeness(args["url"],imagesLinks))
+
+    def _getLinksForImageURL(self, imageURL):
+        url = 'http://localhost:5000/search'
+        headers = {'Content-Type': 'application/json'}
+        payload = '{ "image_url": "'+imageURL+'" }'
+        r = requests.post(url, headers=headers, data=payload)
+        try:
+            parsed = json.loads(r.text)
+        except Exception as e:
+            print(e)
+            return []
+
+        print("parsed",parsed)
+        return parsed["links"][:5]
 
 if __name__ == "__main__":
 	port = 8080

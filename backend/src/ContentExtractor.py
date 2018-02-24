@@ -21,19 +21,33 @@ class Website:
 		r = urllib.request.urlopen(req).read()
 		self.json = json.loads(r.decode('utf-8'))
 		Website.queue.appendleft((code, time.time())) #put the used code at the end of the queue
+		print(type(self.json))
+		print(self.json)
 		return self
 
 	def getText(self):
 		return self.json["objects"][0]["text"]
 
 	def isArticle(self):
-		return self.json["objects"][0]["type"] == "article"
+		if "objects" not in self.json:
+			return False
+		if len(self.json["objects"]) == 0:
+			return False
+		if "type" not in self.json["objects"][0]:
+			return False
+		else:
+			return self.json["objects"][0]["type"] == "article"
 
-	def getDate(self):
+	def getYear(self):
 		rawDate = self.json["objects"][0]["date"]
-		return rawDate[12:16]
+		if len(rawDate) >= 17:
+			return rawData[12:16]
+		else:
+			return 9999999 #Don't do this at home kids
 
 	def getLanguage(self):
+		if "humanLanguage" not in self.json:
+			return "---"
 		return self.json["humanLanguage"]
 
 	def getImages(self):
