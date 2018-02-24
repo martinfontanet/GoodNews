@@ -7,12 +7,17 @@ def isOutdated(otherDates, thisDate):
 	print(thisDate)
 	mean = np.array(otherDates).mean()
 
-	if(thisDate >= mean):
-		print('Date ok')
-		return 1
-
-	if(mean - thisDate > 5):
+	if(mean - thisDate >= 5):
+		return 0
+	elif(mean - thisDate <= -5):
 		return 0
 
-	else:
+	elif(thisDate < mean):
+		return (-1/5) * (mean-thisDate) + 1
+
+	elif(thisDate > mean):
 		return (1/5) * (mean-thisDate) + 1
+	
+	else:
+		return 0
+
