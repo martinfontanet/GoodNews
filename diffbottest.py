@@ -3,7 +3,8 @@ import json
 import requests
 import pickle
 import urllib
-
+import calendar
+import datetime
 #urlToAnalyse = "https://www.indiatoday.in/education-today/gk-current-affairs/story/picassos-masterpiece-sold-auction-new-york-977763-2017-05-18"
 
 
@@ -33,7 +34,11 @@ class Website:
 		return self.json["objects"][0]["type"] == "article"
 
 	def getDate(self):
-		return self.json["objects"][0]["date"]
+		rawDate = self.json["objects"][0]["date"]
+		rawDate1 = rawDate.replace(" GMT", "")
+		rawDate2 = rawDate1.replace(",", "")
+		datetime_object = datetime.datetime.strptime(rawDate2, "%a %d %b %Y %I:%M:%S")
+		return datetime_object
 
 	def getLanguage(self):
 		return self.json["humanLanguage"]
@@ -45,8 +50,3 @@ class Website:
 
 		return all_url
 
-website = Website("https://www.indiatoday.in/education-today/gk-current-affairs/story/picassos-masterpiece-sold-auction-new-york-977763-2017-05-18")
-print(website.getText())
-print(website.getLanguage())
-print(website.getDate())
-print(website.getImages())
