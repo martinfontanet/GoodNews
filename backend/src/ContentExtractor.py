@@ -22,7 +22,11 @@ class Website:
 		return self.json["objects"][0]["type"] == "article"
 
 	def getDate(self):
-		return self.json["objects"][0]["date"]
+		rawDate = self.json["objects"][0]["date"]
+		rawDate1 = rawDate.replace(" GMT", "")
+		rawDate2 = rawDate1.replace(",", "")
+		datetime_object = datetime.datetime.strptime(rawDate2, "%a %d %b %Y %I:%M:%S")
+		return datetime_object
 
 	def getLanguage(self):
 		return self.json["humanLanguage"]
