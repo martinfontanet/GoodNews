@@ -1,6 +1,6 @@
 import numpy as np
 
-# assuming dates are passed as int
+# assuming dates are passed as int representing year
 def isOutdated(otherDates, thisDate):
 
 

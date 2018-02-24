@@ -20,39 +20,21 @@ class Website:
 		req = urllib.request.Request(apiUrl)
 		r = urllib.request.urlopen(req).read()
 		self.json = json.loads(r.decode('utf-8'))
-		Website.queue.appendleft((code, time.time()))
+		Website.queue.appendleft((code, time.time())) #put the used code at the end of the queue
 		return self
-		try:
-			self.article = self.isArticle()
-		except IndexError:
-			self.article = False
 
 	def getText(self):
-		if(self.article):
-			return self.json["objects"][0]["text"]
-		else:
-			return ""
+		return self.json["objects"][0]["text"]
 
 	def isArticle(self):
 		return self.json["objects"][0]["type"] == "article"
 
 	def getDate(self):
-		if(self.article):
-			rawDate = self.json["objects"][0]["date"]
-			#rawDate1 = rawDate.replace(" GMT", "")
-			#rawDate2 = rawDate1.replace(",", "")
-			#print(rawDate2)
-			datetime_object = rawDate[12:16]
-			#datetime_object = datetime.datetime.strptime(rawDate2, "%a %d %b %Y %I:%M:%S")
-			return datetime_object
-		else:
-			return datetime.datetime(1000,1,1)
+		rawDate = self.json["objects"][0]["date"]
+		return rawDate[12:16]
 
 	def getLanguage(self):
-		if(self.article):
-			return self.json["humanLanguage"]
-		else:
-			return ""
+		return self.json["humanLanguage"]
 
 	def getImages(self):
 		return [im["url"] for im in self.json["objects"][0]["images"]]
