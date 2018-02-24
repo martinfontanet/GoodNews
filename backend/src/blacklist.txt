@@ -4,7 +4,7 @@ DoctorYourself.com
 Medical-library.net
 DrWeil.com
 eHow.com
-Mercola.com
+http://mercola.com
 righthealth.com
 PlanetRx.com
 wellsphere.com
@@ -22,3 +22,4 @@ https://www.infowars.com/
 http://www.huffingtonpost.com.au/
 http://www.foxnews.com/
 https://www.rushlimbaugh.com/
+http://creationists.com/

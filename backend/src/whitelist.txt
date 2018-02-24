@@ -13,10 +13,10 @@ http://www.oxfam.org
 http://www.bbc.co.uk
 http://www.westberks.gov.uk/
 http://www.bham.ac.uk/
-lemonde.fr
+http://www.lemonde.fr
 letemps.ch
-eurosport.com
-https://www.eurosport.fr/
+http://eurosport.com
+https://eurosport.fr/
 https://www.nytimes.com/
 https://www.wsj.com/europe
 http://www.bbc.com/news
