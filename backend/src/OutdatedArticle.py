@@ -5,7 +5,7 @@ dates = ['2016-02-23 09:36:26', '2016-02-23 09:36:26', '2016-02-23 09:36:26']
 # assuming dates are passed as [yyyy-mm-dd hh:mm:ss]
 def isOutdated(otherDates, currentDate):
 	outdatedFrom = np.timedelta64(5, 'Y')
-	thisDate = np.timedelta64(currentDate, 'Y')
+	thisDate = np.datetime64(currentDate, 'Y')
 
 	print(thisDate)
 	mean = (np.array(otherDates, dtype='datetime64[Y]')
