@@ -18,6 +18,7 @@ class RequestHandler(BaseHTTPRequestHandler):
     def _set_headers(self):
         self.send_response(200)
         self.send_header('Content-type', 'text/html')
+        self.send_header('Access-Control-Allow-Origin', "*")
         self.end_headers()
         
     def do_POST(self):
@@ -46,7 +47,7 @@ class RequestHandler(BaseHTTPRequestHandler):
 if __name__ == "__main__":
 	port = 8080
 	httpd = HTTPServer(('localhost', port), RequestHandler)
-	httpd.socket = ssl.wrap_socket(httpd.socket, certfile='/Users/gilbert/Programming/hackatons/starthack2018/server.pem', server_side=True)
+	httpd.socket = ssl.wrap_socket(httpd.socket, certfile='/home/martin/Desktop/server.pem', server_side=True)
 	print(" - Starting the server at address: https://localhost:" + str(port))
 	print(" - Currently accepting POST requests")
 	print(" - To shut-down the server, use ctrl + c")
