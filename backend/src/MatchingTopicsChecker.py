@@ -2,14 +2,12 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 import numpy as np
 
 #returns some confidence level between 0 and 1. 0 is fake news and 1 is good news
-def computeSimiliarity(bases, new):
+def computeSimilarity(bases, new):
 	bases.append(new)
 	vect = TfidfVectorizer(min_df=1)
 	tfidf = vect.fit_transform(bases)
 	cosines = (tfidf * tfidf.T).A[len(bases)-1][:len(bases)-1]
-	print(cosines)
-	agreeing = np.sum(cosines >= 0.5)
-	return agreeing / (len(bases) - 1)
+	return np.mean(cosines)
 
 ############################
 # After here: "unit testing"
@@ -24,7 +22,7 @@ def getTextForFile(name):
 
 if __name__ == "__main__":
 	train = [getTextForFile(x) for x in ["soccer2.txt", "soccer1.txt", "soccer3.txt", "soccer4.txt", "soccer5.txt"]] #, "soccer2.txt", "soccer3.txt", "soccer4.txt"	
-	agreeing = computeSimiliarity(train, getTextForFile("guns2.txt"))
+	agreeing = computeSimilarity(train, getTextForFile("guns2.txt"))
 	print("Agreeing: ", agreeing, " -> ", "fake news" if agreeing < 0.5 else "good news")
 
 
