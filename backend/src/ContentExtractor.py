@@ -2,7 +2,8 @@ import json
 import requests
 import pickle
 import urllib
-
+import datetime
+import numpy as np
 class Website:
 
 	def __init__(self, url):
@@ -14,35 +15,52 @@ class Website:
 		req = urllib.request.Request(apiUrl)
 		r = urllib.request.urlopen(req).read()
 		self.json = json.loads(r.decode('utf-8'))
+		try:
+			self.article = self.isArticle()
+		except IndexError:
+			self.article = False
 
 	def getText(self):
-		return self.json["objects"][0]["text"]
+		if(self.article):
+			return self.json["objects"][0]["text"]
+		else:
+			return ""
 
 	def isArticle(self):
 		return self.json["objects"][0]["type"] == "article"
 
 	def getDate(self):
-		rawDate = self.json["objects"][0]["date"]
-		rawDate1 = rawDate.replace(" GMT", "")
-		rawDate2 = rawDate1.replace(",", "")
-		datetime_object = datetime.datetime.strptime(rawDate2, "%a %d %b %Y %I:%M:%S")
-		return datetime_object
+		if(self.article):
+			rawDate = self.json["objects"][0]["date"]
+			#rawDate1 = rawDate.replace(" GMT", "")
+			#rawDate2 = rawDate1.replace(",", "")
+			#print(rawDate2)
+			datetime_object = rawDate[12:16]
+			#datetime_object = datetime.datetime.strptime(rawDate2, "%a %d %b %Y %I:%M:%S")
+			return datetime_object
+		else:
+			return datetime.datetime(1000,1,1)
 
 	def getLanguage(self):
-		return self.json["humanLanguage"]
+		if(self.article):
+			return self.json["humanLanguage"]
+		else:
+			return ""
 
 	def getImages(self):
-		return [im["url"] for im in self.json["objects"][0]["images"]]
-
+		if(self.article):
+			return [im["url"] for im in self.json["objects"][0]["images"]]
+		else:
+			return []
 
 ##########################
 # After here, we unit test
 ##########################
 
 if __name__ == "__main__":
-	website = Website("https://www.indiatoday.in/education-today/gk-current-affairs/story/picassos-masterpiece-sold-auction-new-york-977763-2017-05-18")
+	website = Website("https://www.christies.com/lotfinder/Lot/pablo-picasso-1881-1973-femme-assise-robe-bleue-6073940-details.aspx")
 	website.fetch()
-	print(website.isArticle())
+	#print(website.isArticle())
 	print(website.getText())
 	print(website.getLanguage())
 	print(website.getDate())
