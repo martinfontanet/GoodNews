@@ -44,7 +44,7 @@ class RequestHandler(BaseHTTPRequestHandler):
 if __name__ == "__main__":
 	port = 8080
 	httpd = HTTPServer(('localhost', port), RequestHandler)
-	httpd.socket = ssl.wrap_socket(httpd.socket, certfile='./server.pem', server_side=True)
+	httpd.socket = ssl.wrap_socket(httpd.socket, certfile='/Users/gilbert/Programming/hackatons/starthack2018/server.pem', server_side=True)
 	print(" - Starting the server at address: https://localhost:" + str(port))
 	print(" - Currently accepting POST requests")
 	print(" - To shut-down the server, use ctrl + c")
