@@ -24,7 +24,7 @@ class Website:
 		req = urllib.request.Request(apiUrl)
 		r = urllib.request.urlopen(req).read()
 
-		return json.loads(r)
+		return json.loads(r.decode('utf-8'))
 
 	def getText(self):
 		return self.json["objects"][0]["text"]
