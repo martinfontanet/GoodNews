@@ -72,33 +72,45 @@ button.style = "top:5%;right:5%;position:fixed;z-index: 9999;"
 button.id="fakeNewsButton";
 document.body.appendChild(button);
 
-$("#fakeNewsButton").append('<span id="fakenewsshape" title="Click to analyse the article on the current web page."><svg id="fakenewsshape" height="80" width="180"><g><rect x="3" y="3" rx="20" ry="20" width="174" height="74" stroke="darkblue" fill="lightblue" stroke-width="3"/><text x="17" y="46" font-family="Verdana" font-size="17" fill="darkblue">Fake News Scan</text></g></svg></span>');
+$("#fakeNewsButton").append('<span id="fakenewsshape" title="Click to analyse the article on the current web page."><svg id="fakenewsshape" height="80" width="180"><g><rect x="3" y="3" rx="20" ry="20" width="174" height="74" stroke="darkblue" fill="lightblue" stroke-width="3"/><text x="63" y="36" font-family="Verdana" font-size="17" fill="darkblue">Start</text><text x="17" y="56" font-family="Verdana" font-size="17" fill="darkblue">Fake News Scan</text></g></svg></span>');
 
 
 
 $("#fakeNewsButton").click(function() {
 			color="rgb(0,0,0)";
-    	alert("okok");
+    	//alert("okok");
     	var xhr = new XMLHttpRequest();
 			var url = "https://localhost:8080";
 			xhr.onreadystatechange = function() {
 			    if (xhr.readyState == XMLHttpRequest.DONE) {
-			    	alert(xhr.responseText);
+			    	//alert(xhr.responseText);
 			        var obj = JSON.parse(xhr.responseText);
-			        alert(parseFloat(obj["isFake"]));
+			        //alert(parseFloat(obj["isFake"]));
 			    	if(obj["isArticle"]==1){
-			    		alert(typeof obj["isFake"]);
-			    		if(parseFloat(obj["isFake"])<0.5){
-			    			$("#fakenewsshape").replaceWith('<span id="fakenewsshape" title="'+obj["message"]+'"><svg height="80" width="180"><g><rect x="3" y="3" rx="20" ry="20" width="174" height="74" stroke="darkred" fill="salmon" stroke-width="3"/><text x="50" y="50" font-family="Verdana" font-size="30" fill="darkred">Fake !</text></g></svg></span>');
+			    		//alert(typeof obj["isFake"]);
+			    		if(parseFloat(obj["isFake"])<0.35){
+			    			$("#fakenewsshape").replaceWith('<span id="fakenewsshape" title="'+obj["message"]+'. Prediction: '+parseInt(parseFloat(obj["isFake"])*100)+'% safe'+'"><svg height="80" width="180"><g><rect x="3" y="3" rx="20" ry="20" width="174" height="74" stroke="darkred" fill="salmon" stroke-width="3"/><text x="50" y="50" font-family="Verdana" font-size="30" fill="darkred">Fake !</text></g></svg></span>');
 			    		}
+			    		else if(parseFloat(obj["isFake"])<0.5){
+			    			$("#fakenewsshape").replaceWith('<span id="fakenewsshape" title="'+obj["message"]+'. Prediction: '+parseInt(parseFloat(obj["isFake"])*100)+'% safe'+'"><svg height="80" width="180"><g><rect x="3" y="3" rx="20" ry="20" width="174" height="74" stroke="orangered" fill="orange" stroke-width="3"/><text x="27" y="35" font-family="Verdana" font-size="30" fill="firebrick">Probably</text><text x="50" y="65" font-family="Verdana" font-size="30" fill="firebrick">Fake</text></g></svg></span>');
+			    		}
+			    		else if(parseFloat(obj["isFake"])==0.5){
+			    			$("#fakenewsshape").replaceWith('<span id="fakenewsshape" title="'+obj["message"]+'. Prediction: '+parseInt(parseFloat(obj["isFake"])*100)+'% safe'+'"><svg height="80" width="180"><g><rect x="3" y="3" rx="20" ry="20" width="174" height="74" stroke="maroon" fill="chocolate" stroke-width="3"/><text x="30" y="52" font-family="Verdana" font-size="35" fill="maroon">Unsure</text></g></svg></span>');
+			    		}
+			    		else if(parseFloat(obj["isFake"])<0.65){
+			    			$("#fakenewsshape").replaceWith('<span id="fakenewsshape" title="'+obj["message"]+'. Prediction: '+parseInt(parseFloat(obj["isFake"])*100)+'% safe'+'"><svg height="80" width="180"><g><rect x="3" y="3" rx="20" ry="20" width="174" height="74" stroke="orangered" fill="chartreuse" stroke-width="3"/><text x="27" y="35" font-family="Verdana" font-size="30" fill="firebrick">Probably</text><text x="50" y="65" font-family="Verdana" font-size="30" fill="firebrick">Safe</text></g></svg></span>');
+						}
 			    		else{
-			    			$("#fakenewsshape").replaceWith('<span id="fakenewsshape" title="'+obj["message"]+'"><svg height="80" width="180"><g><rect x="3" y="3" rx="20" ry="20" width="174" height="74" stroke="darkgreen" fill="lightgreen" stroke-width="3"/><text x="50" y="50" font-family="Verdana" font-size="30" fill="darkgreen">Safe !</text></g></svg></span>');
+			    			$("#fakenewsshape").replaceWith('<span id="fakenewsshape" title="'+obj["message"]+'. Prediction: '+parseInt(parseFloat(obj["isFake"])*100)+'% safe'+'"><svg height="80" width="180"><g><rect x="3" y="3" rx="20" ry="20" width="174" height="74" stroke="darkgreen" fill="lightgreen" stroke-width="3"/><text x="50" y="50" font-family="Verdana" font-size="30" fill="darkgreen">Safe !</text></g></svg></span>');
 			  		  	}
 
 			    	}
+			    	else{
+			    		$("#fakenewsshape").replaceWith('<span id="fakenewsshape" title="'+obj["message"]+'. Prediction: '+parseInt(parseFloat(obj["isFake"])*100)+'% safe'+'"><svg height="80" width="180"><g><rect x="3" y="3" rx="20" ry="20" width="174" height="74" stroke="indigo" fill="darkgrey" stroke-width="3"/><text x="10" y="50" font-family="Verdana" font-size="23" fill="indigo">Not an Article</text></g></svg></span>');
+			    	}
 			        //var intensity = xhr.responseText;
 			        //var color = 'rgb('+(255-intensity)+','+intensity+',0)';
-			       // alert(color);
+			       // //alert(color);
 			        //$(this).append( "<svg height=\"28\" width=\"28\"><circle cx=\"7\" cy=\"22\" r=\"5\" stroke=\"green\" stroke-width=\"2\" fill='lightred' /></svg>" );
 			        //document.getElementsById("fakenessCircle").style.color(color);
 			        //document.getElementsById("fakenessCircle").style.fill("lightred");
@@ -108,14 +120,14 @@ $("#fakeNewsButton").click(function() {
 			xhr.open("POST", url, true);
 			
 			var full_url = window.location.href;
-			alert(full_url);
+			//alert(full_url);
 			jsonstring = '{"url":"'+full_url+'"}';
-			alert(jsonstring);
+			//alert(jsonstring);
 			xhr.send(jsonstring);
 
 			//$(this).append( "<svg height=\"28\" width=\"28\"><circle id='fakenessCircle' cx=\"7\" cy=\"22\" r=\"5\" stroke=\"green\" stroke-width=\"2\" fill='"+color+"' /></svg>" );
 			//$(this).append( "<svg height='230' width='250'><circle id='fakenessCircle' cx='7' cy='22' r='50' stroke='green' stroke-width='2' fill='"+color+"' /></svg>" );
-			$("#fakenewsshape").replaceWith('<span id="fakenewsshape" title="Analyse in process..."><svg height="80" width="180"><g><rect x="3" y="3" rx="20" ry="20" width="174" height="74" stroke="orange" fill="yellow" stroke-width="3"/><text x="30" y="46" font-family="Verdana" font-size="24" fill="darkgreen">Loading...</text></g></svg></span>');
+			$("#fakenewsshape").replaceWith('<span id="fakenewsshape" title="Analyse in process..."><svg height="80" width="180"><g><rect x="3" y="3" rx="20" ry="20" width="174" height="74" stroke="orange" fill="yellow" stroke-width="3"/><text x="20" y="46" font-family="Verdana" font-size="24" fill="darkgreen">Analysing...</text></g></svg></span>');
        //do something, alt was down when clicked
     
   });
@@ -223,27 +235,39 @@ $("#fakeNewsButton").click(function() {
     	event.preventDefault();
     	$(this).find( "svg:last" ).remove();
 			color="rgb(0,0,0)";
-    	alert("okok");
+    	//alert("okok");
     	var xhr = new XMLHttpRequest();
 			var url = "https://localhost:8080";
 			xhr.onreadystatechange = function() {
 			    if (xhr.readyState == XMLHttpRequest.DONE) {
-			    	alert(xhr.responseText);
+			    	//alert(xhr.responseText);
 			        var obj = JSON.parse(xhr.responseText);
-			        alert(parseFloat(obj["isFake"]));
+			        //alert(parseFloat(obj["isFake"]));
 			    	if(obj["isArticle"]==1){
-			    		alert(typeof obj["isFake"]);
-			    		if(parseFloat(obj["isFake"])<0.5){
-			    			$("#bubbleFakeNews").replaceWith('<span title="'+obj["message"]+'"><svg height="55" width="105" alt="test"><g><rect x="2.5" y="22" rx="10" ry="10" width="100" height="30" stroke="darkred" fill="salmon" stroke-width="2"/><text x="27" y="43" font-family="Verdana" font-size="17" fill="darkred">Fake !</text></g></svg></span>');
+			    		//alert(typeof obj["isFake"]);
+			    		if(parseFloat(obj["isFake"])<0.35){
+			    			$("#bubbleFakeNews").replaceWith('<span title="'+obj["message"]+'. Prediction: '+parseInt(parseFloat(obj["isFake"])*100)+'% safe'+'"><svg height="55" width="125" alt="test"><g><rect x="2.5" y="22" rx="10" ry="10" width="120" height="30" stroke="darkred" fill="salmon" stroke-width="2"/><text x="27" y="43" font-family="Verdana" font-size="17" fill="darkred">Fake !</text></g></svg></span>');
+			    		}
+			    		else if(parseFloat(obj["isFake"])<0.5){
+			    			$("#bubbleFakeNews").replaceWith('<span title="'+obj["message"]+'. Prediction: '+parseInt(parseFloat(obj["isFake"])*100)+'% safe'+'"><svg height="55" width="125" alt="test"><g><rect x="2.5" y="22" rx="10" ry="10" width="120" height="30" stroke="orangered" fill="orange" stroke-width="2"/><text x="11" y="43" font-family="Verdana" font-size="15" fill="firebrick">Probably Fake</text></g></svg></span>');
+			    		}
+			    		else if(parseFloat(obj["isFake"])==0.5){
+			    			$("#bubbleFakeNews").replaceWith('<span title="'+obj["message"]+'. Prediction: '+parseInt(parseFloat(obj["isFake"])*100)+'% safe'+'"><svg height="55" width="125" alt="test"><g><rect x="2.5" y="22" rx="10" ry="10" width="120" height="30" stroke="maroon" fill="chocolate" stroke-width="2"/><text x="27" y="43" font-family="Verdana" font-size="19" fill="maroon">Unsure</text></g></svg></span>');
+			    		}
+			    		else if(parseFloat(obj["isFake"])<0.65){
+			    			$("#bubbleFakeNews").replaceWith('<span title="'+obj["message"]+'. Prediction: '+parseInt(parseFloat(obj["isFake"])*100)+'% safe'+'"><svg height="55" width="125" alt="test"><g><rect x="2.5" y="22" rx="10" ry="10" width="120" height="30" stroke="orangered" fill="chartreuse" stroke-width="2"/><text x="11" y="43" font-family="Verdana" font-size="15" fill="firebrick">Probably Safe</text></g></svg></span>');
 			    		}
 			    		else{
-			    			$("#bubbleFakeNews").replaceWith('<span title="'+obj["message"]+'"><svg height="55" width="105" alt="test"><g><rect x="2.5" y="22" rx="10" ry="10" width="100" height="30" stroke="green" fill="lightgreen" stroke-width="2"/><text x="27" y="43" font-family="Verdana" font-size="17" fill="darkgreen">Safe !</text></g></svg></span>');
+			    			$("#bubbleFakeNews").replaceWith('<span title="'+obj["message"]+'. Prediction: '+parseInt(parseFloat(obj["isFake"])*100)+'% safe'+'"><svg height="55" width="125" alt="test"><g><rect x="2.5" y="22" rx="10" ry="10" width="120" height="30" stroke="green" fill="lightgreen" stroke-width="2"/><text x="27" y="43" font-family="Verdana" font-size="17" fill="darkgreen">Safe !</text></g></svg></span>');
 			  		  	}
 
 			    	}
+			    	else{
+			    		$("#bubbleFakeNews").replaceWith('<span title="'+obj["message"]+'. Prediction: '+parseInt(parseFloat(obj["isFake"])*100)+'% safe'+'"><svg height="55" width="125" alt="test"><g><rect x="2.5" y="22" rx="10" ry="10" width="120" height="30" stroke="indigo" fill="darkgrey" stroke-width="2"/><text x="7" y="43" font-family="Verdana" font-size="16" fill="indigo">Not an Article</text></g></svg></span>');
+			    	}
 			        //var intensity = xhr.responseText;
 			        //var color = 'rgb('+(255-intensity)+','+intensity+',0)';
-			       // alert(color);
+			       // //alert(color);
 			        //$(this).append( "<svg height=\"28\" width=\"28\"><circle cx=\"7\" cy=\"22\" r=\"5\" stroke=\"green\" stroke-width=\"2\" fill='lightred' /></svg>" );
 			        //document.getElementsById("fakenessCircle").style.color(color);
 			        //document.getElementsById("fakenessCircle").style.fill("lightred");
@@ -263,20 +287,20 @@ $("#fakeNewsButton").click(function() {
 					break;
 				}
 			}
-			alert(str);
-			alert(position);
+			//alert(str);
+			//alert(position);
 			var full_url = $(this).attr('href');
 			if(full_url.slice(0,4) != "http"){
 				full_url = str.slice(0,position)+full_url;
 			}
-			alert(full_url);
+			//alert(full_url);
 			jsonstring = '{"url":"'+full_url+'"}';
-			alert(jsonstring);
+			//alert(jsonstring);
 			xhr.send(jsonstring);
 
 			//$(this).append( "<svg height=\"28\" width=\"28\"><circle id='fakenessCircle' cx=\"7\" cy=\"22\" r=\"5\" stroke=\"green\" stroke-width=\"2\" fill='"+color+"' /></svg>" );
 			//$(this).append( "<svg height='230' width='250'><circle id='fakenessCircle' cx='7' cy='22' r='50' stroke='green' stroke-width='2' fill='"+color+"' /></svg>" );
-			$(this).append('<svg id="bubbleFakeNews" height="55" width="105"><g><rect x="2.5" y="22" rx="10" ry="10" width="100" height="30" stroke="orange" fill="yellow" stroke-width="2"/><text x="10" y="43" font-family="Verdana" font-size="17 " fill="darkgreen">Loading...</text></g></svg>');
+			$(this).append('<svg id="bubbleFakeNews" height="55" width="125"><g><rect x="2.5" y="22" rx="10" ry="10" width="120" height="30" stroke="orange" fill="yellow" stroke-width="2"/><text x="10" y="43" font-family="Verdana" font-size="17 " fill="darkgreen">Analysing...</text></g></svg>');
        //do something, alt was down when clicked
     }
   });
@@ -295,10 +319,10 @@ $("#fakeNewsButton").click(function() {
 
 			    	if(obj["isArticle"]==1){
 			    		if(obj["isFake"]==1){
-			    			$("#bubbleFakeNews").replaceWith('<span title='+obj["message"]+'><svg height="55" width="105" alt="test"><g><rect x="2.5" y="22" rx="10" ry="10" width="100" height="30" stroke="darkred" fill="salmon" stroke-width="2"/><text x="27" y="43" font-family="Verdana" font-size="17" fill="darkred">Fake !</text></g></svg></span>');
+			    			$("#bubbleFakeNews").replaceWith('<span title='+obj["message"]+'. Prediction: '+parseInt(parseFloat(obj["isFake"])*100)+'% safe'+'><svg height="55" width="105" alt="test"><g><rect x="2.5" y="22" rx="10" ry="10" width="100" height="30" stroke="darkred" fill="salmon" stroke-width="2"/><text x="27" y="43" font-family="Verdana" font-size="17" fill="darkred">Fake !</text></g></svg></span>');
 			    		}
 			    		else{
-			    			$("#bubbleFakeNews").replaceWith('<span title='+obj["message"]+'><svg height="55" width="105" alt="test"><g><rect x="2.5" y="22" rx="10" ry="10" width="100" height="30" stroke="green" fill="lightgreen" stroke-width="2"/><text x="27" y="43" font-family="Verdana" font-size="17" fill="darkgreen">Safe !</text></g></svg></span>');
+			    			$("#bubbleFakeNews").replaceWith('<span title='+obj["message"]+'. Prediction: '+parseInt(parseFloat(obj["isFake"])*100)+'% safe'+'><svg height="55" width="105" alt="test"><g><rect x="2.5" y="22" rx="10" ry="10" width="100" height="30" stroke="green" fill="lightgreen" stroke-width="2"/><text x="27" y="43" font-family="Verdana" font-size="17" fill="darkgreen">Safe !</text></g></svg></span>');
 			  		  	}
 			    	}
 			        //var intensity = xhr.responseText;
@@ -353,27 +377,39 @@ $(document).on('scroll', function() {
     	event.preventDefault();
     	$(this).find( "svg:last" ).remove();
 			color="rgb(0,0,0)";
-    	alert("okok");
+    	//alert("okok");
     	var xhr = new XMLHttpRequest();
 			var url = "https://localhost:8080";
 			xhr.onreadystatechange = function() {
 			    if (xhr.readyState == XMLHttpRequest.DONE) {
-			    	alert(xhr.responseText);
+			    	//alert(xhr.responseText);
 			        var obj = JSON.parse(xhr.responseText);
 
 			    	if(obj["isArticle"]==1){
-			    		alert(typeof obj["isFake"]);
-			    		if(parseFloat(obj["isFake"])<0.5){
-			    			$("#bubbleFakeNews").replaceWith('<span title="'+obj["message"]+'""><svg height="55" width="105" alt="test"><g><rect x="2.5" y="22" rx="10" ry="10" width="100" height="30" stroke="darkred" fill="salmon" stroke-width="2"/><text x="27" y="43" font-family="Verdana" font-size="17" fill="darkred">Fake !</text></g></svg></span>');
+			    		//alert(typeof obj["isFake"]);
+			    		if(parseFloat(obj["isFake"])<0.35){
+			    			$("#bubbleFakeNews").replaceWith('<span title="'+obj["message"]+'. Prediction: '+parseInt(parseFloat(obj["isFake"])*100)+'% safe'+'"><svg height="55" width="125" alt="test"><g><rect x="2.5" y="22" rx="10" ry="10" width="120" height="30" stroke="darkred" fill="salmon" stroke-width="2"/><text x="27" y="43" font-family="Verdana" font-size="17" fill="darkred">Fake !</text></g></svg></span>');
+			    		}
+			    		else if(parseFloat(obj["isFake"])<0.5){
+			    			$("#bubbleFakeNews").replaceWith('<span title="'+obj["message"]+'. Prediction: '+parseInt(parseFloat(obj["isFake"])*100)+'% safe'+'"><svg height="55" width="125" alt="test"><g><rect x="2.5" y="22" rx="10" ry="10" width="120" height="30" stroke="orangered" fill="orange" stroke-width="2"/><text x="11" y="43" font-family="Verdana" font-size="15" fill="firebrick">Probably Fake</text></g></svg></span>');
+			    		}
+			    		else if(parseFloat(obj["isFake"])==0.5){
+			    			$("#bubbleFakeNews").replaceWith('<span title="'+obj["message"]+'. Prediction: '+parseInt(parseFloat(obj["isFake"])*100)+'% safe'+'"><svg height="55" width="125" alt="test"><g><rect x="2.5" y="22" rx="10" ry="10" width="120" height="30" stroke="maroon" fill="chocolate" stroke-width="2"/><text x="27" y="43" font-family="Verdana" font-size="19" fill="maroon">Unsure</text></g></svg></span>');
+			    		}
+			    		else if(parseFloat(obj["isFake"])<0.65){
+			    			$("#bubbleFakeNews").replaceWith('<span title="'+obj["message"]+'. Prediction: '+parseInt(parseFloat(obj["isFake"])*100)+'% safe'+'"><svg height="55" width="125" alt="test"><g><rect x="2.5" y="22" rx="10" ry="10" width="120" height="30" stroke="orangered" fill="chartreuse" stroke-width="2"/><text x="11" y="43" font-family="Verdana" font-size="15" fill="firebrick">Probably Safe</text></g></svg></span>');
 			    		}
 			    		else{
-			    			$("#bubbleFakeNews").replaceWith('<span title="'+obj["message"]+'"><svg height="55" width="105" alt="test"><g><rect x="2.5" y="22" rx="10" ry="10" width="100" height="30" stroke="green" fill="lightgreen" stroke-width="2"/><text x="27" y="43" font-family="Verdana" font-size="17" fill="darkgreen">Safe !</text></g></svg></span>');
+			    			$("#bubbleFakeNews").replaceWith('<span title="'+obj["message"]+'. Prediction: '+parseInt(parseFloat(obj["isFake"])*100)+'% safe'+'"><svg height="55" width="125" alt="test"><g><rect x="2.5" y="22" rx="10" ry="10" width="120" height="30" stroke="green" fill="lightgreen" stroke-width="2"/><text x="27" y="43" font-family="Verdana" font-size="17" fill="darkgreen">Safe !</text></g></svg></span>');
 			  		  	}
 
 			    	}
+			    	else{
+			    		$("#bubbleFakeNews").replaceWith('<span title="'+obj["message"]+'. Prediction: '+parseInt(parseFloat(obj["isFake"])*100)+'% safe'+'"><svg height="55" width="125" alt="test"><g><rect x="2.5" y="22" rx="10" ry="10" width="120" height="30" stroke="indigo" fill="darkgrey" stroke-width="2"/><text x="7" y="43" font-family="Verdana" font-size="16" fill="indigo">Not an Article</text></g></svg></span>');
+			    	}
 			        //var intensity = xhr.responseText;
 			        //var color = 'rgb('+(255-intensity)+','+intensity+',0)';
-			       // alert(color);
+			       // //alert(color);
 			        //$(this).append( "<svg height=\"28\" width=\"28\"><circle cx=\"7\" cy=\"22\" r=\"5\" stroke=\"green\" stroke-width=\"2\" fill='lightred' /></svg>" );
 			        //document.getElementsById("fakenessCircle").style.color(color);
 			        //document.getElementsById("fakenessCircle").style.fill("lightred");
@@ -392,20 +428,20 @@ $(document).on('scroll', function() {
 					break;
 				}
 			}
-			alert(str);
-			alert(position);
+			//alert(str);
+			//alert(position);
 			var full_url = $(this).attr('href');
 			if(full_url.slice(0,4) != "http"){
 				full_url = str.slice(0,position)+full_url;
 			}
-			alert(full_url);
+			//alert(full_url);
 			jsonstring = '{"url":"'+full_url+'"}';
-			alert(jsonstring);
+			//alert(jsonstring);
 			xhr.send(jsonstring);
 
 			//$(this).append( "<svg height=\"28\" width=\"28\"><circle id='fakenessCircle' cx=\"7\" cy=\"22\" r=\"5\" stroke=\"green\" stroke-width=\"2\" fill='"+color+"' /></svg>" );
 			//$(this).append( "<svg height='230' width='250'><circle id='fakenessCircle' cx='7' cy='22' r='50' stroke='green' stroke-width='2' fill='"+color+"' /></svg>" );
-			$(this).append('<svg id="bubbleFakeNews" height="55" width="105"><g><rect x="2.5" y="22" rx="10" ry="10" width="100" height="30" stroke="orange" fill="yellow" stroke-width="2"/><text x="10" y="43" font-family="Verdana" font-size="17 " fill="darkgreen">Loading...</text></g></svg>');
+			$(this).append('<svg id="bubbleFakeNews" height="55" width="125"><g><rect x="2.5" y="22" rx="10" ry="10" width="120" height="30" stroke="orange" fill="yellow" stroke-width="2"/><text x="10" y="43" font-family="Verdana" font-size="17 " fill="darkgreen">Analysing...</text></g></svg>');
        //do something, alt was down when clicked
     }
   });
