@@ -33,7 +33,7 @@ def predictFakeness(articleURL, articlesWithSameImagesURLs):
 	articlesWithSameImages = [x for x in articlesWithSameImages if x.isArticle()] # keep only articles
 
 	#Article date score computation
-	if isOutdated([website.getYear() for website in articlesWithSameImages], article.getYear()) <= 0.9: #picture appeared a long time ago... bad smell!
+	if isOutdated([website.getYear() for website in articlesWithSameImages], article.getYear()) >= 0.9: #picture appeared a long time ago... bad smell!
 		return {"isFake": 0.3, "message": "Some picture were also found in old articles, bad smell!", "isArticle": 1}
 
 	#Agreement score computation
@@ -45,6 +45,7 @@ def predictFakeness(articleURL, articlesWithSameImagesURLs):
 	return {"isFake": 0.5, "message": "Can't tell sorry", "isArticle": 1}
 
 if __name__ == "__main__":
+	pass
 	# THIS SHOULD OUTPUT GOOD
 	#toVerify = "http://www.bbc.com/news/world-europe-43169054"
 	#withSameImage = ["http://www.bbc.com/news/uk-politics-32810887", "http://www.bbc.com/news/uk-politics-43136076", "https://edition.cnn.com/2018/02/23/opinions/brexit-could-change-the-united-kingdom-as-we-know-it-robertson-opinion/index.html"]

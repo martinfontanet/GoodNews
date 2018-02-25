@@ -1,5 +1,6 @@
 # Assuming only the year are passed as argument (as int)
-# assuming dates are passed as int representing year
+
+#returns 1 if the article is outdated 0 if it is current
 def isOutdated(otherDates, thisDate):
 	if len(otherDates) == 0:
 		return 0
@@ -8,6 +9,7 @@ def isOutdated(otherDates, thisDate):
 	toReturn = (thisDate - mean) / 5
 	toReturn = max(0, toReturn)
 	toReturn = min(1, toReturn)
+
 	return toReturn
 
 if __name__ == "__main__":

@@ -4,6 +4,7 @@ with open('whitelist.txt') as f:
 	whiteList = [l.replace("\n", "") for l in f.readlines()]
 with open('blacklist.txt') as f:
 	blackList = [l.replace("\n", "") for l in f.readlines()]
+
 def isWhiteListed(url):
 	return getDomainName(url) in whiteList
 

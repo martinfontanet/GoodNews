@@ -39,9 +39,11 @@ class Website:
 			return self.json["objects"][0]["type"] == "article"
 
 	def getYear(self):
+		if "date" not in self.json["objects"][0]:
+			return 999999
 		rawDate = self.json["objects"][0]["date"]
 		if len(rawDate) >= 17:
-			return rawData[12:16]
+			return int(rawDate[12:16])
 		else:
 			return 9999999 #Don't do this at home kids
 
