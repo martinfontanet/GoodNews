@@ -43,6 +43,12 @@ class RequestHandler(BaseHTTPRequestHandler):
             website = Website(args["url"]).fetch()
             if not website.isArticle():
                 return '{"isFake": 0, "message": "This is not an article!", "isArticle": 0}'
+            print("=========== LANGUAGE ======", website.getLanguage())
+            
+            language = "en"
+            if website.getLanguage() in {"fr", "de"}:
+                language = website.getLanguage()
+
             print("1")
             images = website.getImages()
             print(images)
@@ -50,16 +56,16 @@ class RequestHandler(BaseHTTPRequestHandler):
             imagesLinks = []
             print("3")
             for image in images:
-                imagesLinks.extend(self._getLinksForImageURL(image))
+                imagesLinks.extend(self._getLinksForImageURL(image, language))
 
             print("images:",imagesLinks)
             ###
             return json.dumps(predictFakeness(args["url"],imagesLinks))
 
-    def _getLinksForImageURL(self, imageURL):
+    def _getLinksForImageURL(self, imageURL, language):
         url = 'http://localhost:5000/search'
         headers = {'Content-Type': 'application/json'}
-        payload = '{ "image_url": "'+imageURL+'" }'
+        payload = '{ "image_url": "' + imageURL + '", "language": "'+ language +'" }'
         r = requests.post(url, headers=headers, data=payload)
         try:
             parsed = json.loads(r.text)
