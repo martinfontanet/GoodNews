@@ -1,10 +1,17 @@
 import requests
 from collections import Counter
 from ContentExtractor import Website
+import string
 
 # 1 is excellent quality and 0 is horrible quality
 def spellingQuality(text):
 	text.replace("“", "") #remove quotation marks, Language Tool doesn't like the 
+
+	text2 = ""
+	for t in text:
+		if t not in string.printable:
+			text2 += t
+	text = text2
 
 	#compute the number of sentences = roughly the number of occurence of one of the following: . ! ? ;
 	count = Counter(text)
