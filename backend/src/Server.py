@@ -43,22 +43,18 @@ class RequestHandler(BaseHTTPRequestHandler):
             website = Website(args["url"]).fetch()
             if not website.isArticle():
                 return '{"isFake": 0, "message": "This is not an article!", "isArticle": 0}'
-            print("=========== LANGUAGE ======", website.getLanguage())
             
             language = "en"
             if website.getLanguage() in {"fr", "de"}:
                 language = website.getLanguage()
 
-            print("1")
             images = website.getImages()
             print(images)
-            print("2")
             imagesLinks = []
-            print("3")
             for image in images:
                 imagesLinks.extend(self._getLinksForImageURL(image, language))
 
-            print("images:",imagesLinks)
+            print("images:", imagesLinks)
             ###
             return json.dumps(predictFakeness(args["url"],imagesLinks))
 
@@ -73,7 +69,6 @@ class RequestHandler(BaseHTTPRequestHandler):
             print(e)
             return []
 
-        print("parsed",parsed)
         return parsed["links"][:5]
 
 if __name__ == "__main__":

@@ -7,6 +7,7 @@ def computeSimilarity(bases, new):
 	vect = TfidfVectorizer(min_df=1)
 	tfidf = vect.fit_transform(bases)
 	cosines = (tfidf * tfidf.T).A[len(bases)-1][:len(bases)-1]
+	print("COSINES::::::::::::::: ", cosines)
 	return np.mean(cosines)
 
 ############################
